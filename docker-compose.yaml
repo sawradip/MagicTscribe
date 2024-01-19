@@ -1,0 +1,39 @@
+# version: '3.8'
+
+# services:
+#   gradio-app:
+#     build: .
+#     ports:
+#       - "7860:7860"
+#     volumes:
+#       - .:/src
+#     environment:
+#       - NVIDIA_VISIBLE_DEVICES=all
+#     deploy:
+#       resources:
+#         reservations:
+#           devices:
+#             - driver: nvidia
+#               count: 1
+#               capabilities: [gpu]
+
+version: "3.8"
+
+services:
+  asr_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sawradip/magic_trancriber:1.0.0
+    ports:
+      - "7860:7860"
+    volumes:
+      - ~/.cache:/root/.cache
+    command: ["python3", "main.py"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: [gpu]
+            count: all  # This gives access to all GPUs
